@@ -244,18 +244,23 @@ static void print_status_narrow(void) {
 
     /* WPM END*/
 
+    oled_set_cursor(0, 13);
+    oled_write("-----", false);
+
 }
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+  if (!is_keyboard_master())
+    return OLED_ROTATION_90;  // flips the display 180 degrees if offhand
   return OLED_ROTATION_270;
 }
 
 bool oled_task_user(void) {
-  /* KEYBOARD PET VARIABLES START */
+  /* KEYBOARD  VARIABLES START */
 
     current_wpm   = get_current_wpm();
 
-    /* KEYBOARD PET VARIABLES END */
+    /* KEYBOARD WPM VARIABLES END */
 
   if (is_keyboard_master()) {
     print_status_narrow();
