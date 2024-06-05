@@ -3,6 +3,7 @@
 enum layer_number {
   _QWERTY = 0,
   _COLEMAK,
+  _GAMING,
   _LOWER,
   _RAISE,
   _ADJUST,
@@ -11,7 +12,33 @@ enum layer_number {
 enum custom_keycodes {
     KC_QWERTY = QK_USER,
     KC_COLEMAK,
+    KC_GAMING,
 };
+
+// Left-hand home row mods QWERTY 
+#define HOME_A LGUI_T(KC_A)
+#define HOME_S LALT_T(KC_S)
+#define HOME_D LCTL_T(KC_D)
+#define HOME_F LSFT_T(KC_F)
+
+// Right-hand home row mods QWERTY
+#define HOME_J RSFT_T(KC_J)
+#define HOME_K RCTL_T(KC_K)
+#define HOME_L LALT_T(KC_L)
+#define HOME_SCLN RGUI_T(KC_SCLN)
+
+// Left-hand home row mods COLEMAK
+#define COLK_A LGUI_T(KC_A)
+#define COLK_R LALT_T(KC_R)
+#define COLK_S LCTL_T(KC_S)
+#define COLK_T LSFT_T(KC_T)
+
+// Right-hand home row mods COLEMAK
+#define COLK_N RSFT_T(KC_N)
+#define COLK_E RCTL_T(KC_E)
+#define COLK_I LALT_T(KC_I)
+#define COLK_O RGUI_T(KC_O)
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -31,11 +58,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
  [_QWERTY] = LAYOUT(
-  KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
-  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
-  KC_LSFT,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_LBRC,  KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT,
-                        KC_LGUI, MO(_LOWER), KC_LALT, KC_SPC, KC_ENT, KC_BSPC, MO(_RAISE), KC_RGUI
+  KC_ESC,    KC_1,    KC_2,   KC_3,   KC_4,   KC_5,                     KC_6,   KC_7,   KC_8,    KC_9,   KC_0,      KC_GRV,
+  KC_TAB,    KC_Q,    KC_W,   KC_E,   KC_R,   KC_T,                     KC_Y,   KC_U,   KC_I,    KC_O,   KC_P,      KC_MINS,
+  KC_LSFT,   HOME_A,  HOME_S, HOME_D, HOME_F, KC_G,                     KC_H,   HOME_J, HOME_K,  HOME_L, HOME_SCLN, KC_QUOT,
+  KC_LCTL,   KC_Z,    KC_X,   KC_C,   KC_V,   KC_B, KC_LBRC,  KC_RBRC,  KC_N,   KC_M,   KC_COMM, KC_DOT, KC_SLSH,   KC_RSFT,
+                          KC_LGUI, MO(_LOWER), KC_LALT, KC_SPC, KC_ENT, KC_BSPC, MO(_RAISE), KC_RGUI
 ),
 
 /* COLEMAK
@@ -54,10 +81,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
  [_COLEMAK] = LAYOUT(
+  KC_ESC,    KC_1,    KC_2,   KC_3,   KC_4,   KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,   KC_0,       KC_GRV,
+  KC_TAB,    KC_Q,    KC_W,   KC_F,   KC_P,   KC_G,                     KC_J,    KC_L,    KC_U,    KC_Y,   KC_SCLN,    KC_MINS,
+  KC_LSFT,   COLK_A,  COLK_R, COLK_S, COLK_T, KC_D,                     KC_H,    COLK_N,  COLK_E,  COLK_I, COLK_O,     KC_QUOT,
+  KC_LCTL,   KC_Z,    KC_X,   KC_C,   KC_V,   KC_B, KC_LBRC,  KC_RBRC,  KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,    KC_RSFT,
+                          KC_LGUI, MO(_LOWER), KC_LALT, KC_SPC, KC_ENT, KC_BSPC, MO(_RAISE), KC_RGUI
+),
+
+/* GAMING
+ * ,-----------------------------------------.                    ,-----------------------------------------.
+ * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  `   |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  -   |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |LSHIFT|   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
+ * |------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+------|
+ * |LCTRL |   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |RShift|
+ * `-----------------------------------------/       /     \      \-----------------------------------------'
+ *                   | LGUI |LOWER |LAlt  | /Space  /       \Enter \  |BackSP|RAISE | RGUI |
+ *                   |      |      |      |/       /         \      \ |      |      |      |
+ *                   `----------------------------'           '------''--------------------'
+ */
+
+ [_GAMING] = LAYOUT(
   KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
-  KC_TAB,   KC_Q,   KC_W,    KC_F,    KC_P,    KC_G,                     KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN,    KC_MINS,
-  KC_LSFT,  KC_A,   KC_R,    KC_S,    KC_T,    KC_D,                     KC_H,    KC_N,    KC_E,    KC_I,    KC_O, KC_QUOT,
-  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_LBRC,  KC_RBRC,  KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT,
+  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
+  KC_LSFT,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+  KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_LBRC,  KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT,
                         KC_LGUI, MO(_LOWER), KC_LALT, KC_SPC, KC_ENT, KC_BSPC, MO(_RAISE), KC_RGUI
 ),
 
@@ -75,6 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
+
 [_LOWER] = LAYOUT(
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, _______,
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
@@ -110,9 +161,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      |      |QWERTY|      |-------.    ,-------|      |COLEMAK|RGB ON| HUE+ | SAT+ | VAL+ |
+ * |      |      |QWRTY |COLMK |GAMES |      |-------.    ,-------|      |      |      |      |      |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------|    |-------|      |      | MODE | HUE- | SAT- | VAL- |
+ * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *                   | LAlt | LGUI |LOWER | /Space  /       \Enter \  |RAISE |BackSP| RGUI |
  *                   |      |      |      |/       /         \      \ |      |      |      |
@@ -121,7 +172,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ADJUST] = LAYOUT(
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_QWERTY, XXXXXXX,                   XXXXXXX, KC_COLEMAK, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, KC_QWERTY, KC_COLEMAK, KC_GAMING, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                              _______, _______, _______, _______, _______,  _______, _______, _______
   )
@@ -199,7 +250,10 @@ static void print_status_narrow(void) {
             oled_write("QWRTY", false);
             break;
         case _COLEMAK:
-            oled_write("COLMK ", false);
+            oled_write("COLMK", false);
+            break;
+        case _GAMING:
+            oled_write("GAMES", false);
             break;
         default:
             oled_write("UNDEF", false);
@@ -281,6 +335,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_COLEMAK:
             if (record->event.pressed) {
                 set_single_persistent_default_layer(_COLEMAK);
+            }
+            return false;
+        case KC_GAMING:
+            if (record->event.pressed) {
+                set_single_persistent_default_layer(_GAMING);
             }
             return false;
 
