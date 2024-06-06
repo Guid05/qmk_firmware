@@ -5,6 +5,9 @@
 .DS_Store
 ._*
 
+# built firmwares
+/*.hex
+
 # Merge files
 *.orig
 *.rej
