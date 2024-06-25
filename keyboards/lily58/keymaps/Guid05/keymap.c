@@ -39,7 +39,7 @@ enum custom_keycodes {
 #define COLK_I LALT_T(KC_I)
 #define COLK_O RGUI_T(KC_O)
 
-// Left-hand thumb cluster mod tap
+// thumb cluster mod tap
 #define RGUI_DEL RGUI_T(KC_DEL)
 #define ESC_LALT LALT_T(KC_ESC)
 
@@ -47,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* QWERTY
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  `   |
+ * | ESC  |      |      |      |      |      |                    |      |      |      |      |      |  `   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  -   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
@@ -70,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* COLEMAK
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  `   |
+ * | ESC  |      |      |      |      |      |                    |      |      |      |      |      |  `   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Tab  |   Q  |   W  |   F  |   P  |   G  |                    |   J  |   L  |   U  |   Y  |   ;  |  -   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
@@ -192,8 +192,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #define frame_size 512
 
-//static const char PROGMEM windows_logo[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xbc, 0xbc, 0xbe, 0xbe, 0x00, 0xbe, 0xbe, 0xbf, 0xbf, 0xbf, 0xbf, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x07, 0x0f, 0x0f, 0x00, 0x0f, 0x0f, 0x1f, 0x1f, 0x1f, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-static const char PROGMEM windows_logo[] = {
+static const char PROGMEM static_logo[] = {
     0x00, 0x00, 0x00, 0x80, 0xc0, 0xe0, 0x70, 0x38, 0x18, 0x0c, 0x0c, 0xce, 0xe6, 0xf6, 0xf6, 0xfe, 
     0xfe, 0xf6, 0xf6, 0xe6, 0x8e, 0x0c, 0x1c, 0x18, 0x38, 0x70, 0xe0, 0xc0, 0x80, 0x00, 0x00, 0x00, 
     0x00, 0xf8, 0xfe, 0xe7, 0xf9, 0xf8, 0xfc, 0xfc, 0xfc, 0xfc, 0xf8, 0xfb, 0xe7, 0x0f, 0x1f, 0xff, 
@@ -246,7 +245,7 @@ int   current_wpm = 0;
 static void print_status_narrow(void) {
   /* Print current mode*/
     oled_set_cursor(0, 0);
-    oled_write_raw_P(windows_logo, sizeof(windows_logo));
+    oled_write_raw_P(static_logo, sizeof(static_logo));
 
     oled_set_cursor(0, 5);
 
@@ -265,10 +264,7 @@ static void print_status_narrow(void) {
     }
 
     oled_set_cursor(0, 7);
-
-    /* Print current layer */
     oled_write("LAYER", false);
-
     oled_set_cursor(0, 8);
 
     switch (get_highest_layer(layer_state)) {
