@@ -187,8 +187,28 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
+#ifdef QUICK_TAP_TERM_PER_KEY
+
+// Hold backspace on double tap
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(_RAISE, KC_BSPC):
+            return QUICK_TAP_TERM + 180;
+        default:
+            return QUICK_TAP_TERM;
+    }
+}
+
+#endif
+
 //SSD1306 OLED update loop, make sure to enable OLED_ENABLE=yes in rules.mk
 #ifdef OLED_ENABLE
+
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+  if (!is_keyboard_master())
+    return OLED_ROTATION_90;  // flips the display 180 degrees if offhand
+  return OLED_ROTATION_270;
+}
 
 #define frame_size 512
 
@@ -302,12 +322,6 @@ static void print_status_narrow(void) {
     oled_set_cursor(0, 13);
     oled_write("-----", false);
 
-}
-
-oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master())
-    return OLED_ROTATION_90;  // flips the display 180 degrees if offhand
-  return OLED_ROTATION_270;
 }
 
 bool oled_task_user(void) {
